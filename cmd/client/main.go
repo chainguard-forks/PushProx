@@ -279,8 +279,13 @@ func main() {
 	transport := &http.Transport{
 		Proxy: http.ProxyFromEnvironment,
 		DialContext: (&net.Dialer{
-			Timeout:   30 * time.Second,
-			KeepAlive: 30 * time.Second,
+			Timeout: 30 * time.Second,
+			KeepAliveConfig: net.KeepAliveConfig{
+				Enable:   true,
+				Idle:     30 * time.Second,
+				Interval: 5 * time.Second,
+				Count:    3,
+			},
 			DualStack: true,
 		}).DialContext,
 		MaxIdleConns:          100,
