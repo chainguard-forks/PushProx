@@ -1,5 +1,16 @@
 # PushProx [![CircleCI](https://circleci.com/gh/prometheus-community/PushProx.svg?style=shield)](https://circleci.com/gh/prometheus-community/PushProx)
 
+> [!IMPORTANT]
+>
+> This is a supported replacement of the original [prometheus-community/PushProx](https://github.com/prometheus-community/PushProx) repository.
+>
+> Community contributions are not being accepted at this time. The documentation has been carried over directly from the original repository and may not reflect recent changes.
+>
+> We will make a best-effort attempt to address publicly known security vulnerabilities, including CVEs in dependencies and certain source code vulnerabilities when remediation can be achieved safely and with minimal risk. If mitigating a vulnerability would require extensive code changes (for example, adapting to a new API or significant refactoring), we will generally not make that change in order to avoid introducing regressions.
+>
+> Interested in a CVE-free container image of this project? [Contact Chainguard](https://www.chainguard.dev/contact).
+---
+
 PushProx is a client and proxy that allows transversing of NAT and other
 similar network topologies by Prometheus, while still following the pull model.
 
@@ -54,16 +65,16 @@ file\_sd\_configs can read and then then relabel as needed.
 
 ![Sequence diagram](./docs/sequence.svg)
 
-Clients perform scrapes in a network environment that's not directly accessible by Prometheus. 
+Clients perform scrapes in a network environment that's not directly accessible by Prometheus.
 The Proxy is accessible by both the Clients and Prometheus.
 Each client is identified by its fqdn.
 
 For example, the following sequence is performed when Prometheus scrapes target `fqdn-x` via PushProx.
-First, a Client polls the Proxy for scrape requests, and includes its fqdn in the poll (1). 
+First, a Client polls the Proxy for scrape requests, and includes its fqdn in the poll (1).
 The Proxy does not respond yet.
 Next, Prometheus tries to scrape the target with hostname `fqdn-x` via the Proxy (2).
 Using the fqdn received in (1), the Proxy now routes the scrape to the correct Client: the scrape request is in the response body of the poll (3).
-This scrape request is executed by the client (4), the response containing metrics (5) is posted to the Proxy (6). 
+This scrape request is executed by the client (4), the response containing metrics (5) is posted to the Proxy (6).
 On its turn, the Proxy returns this to Prometheus (7) as a reponse to the initial scrape of (2).
 
 PushProx passes all HTTP headers transparently, features like compression and accept encoding are up to the scraping Prometheus server.
